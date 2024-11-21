@@ -1,10 +1,42 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
-import App from './App.tsx'
+// import App from './App.tsx'
+import {createBrowserRouter, RouterProvider} from "react-router-dom";
+import RootLayout from "./layouts/RootLayout.tsx";
+import Home from "./pages/Home.tsx";
+import About from "./pages/About.tsx";
+
+const router = createBrowserRouter([
+    {
+        path: "/",
+        element: <RootLayout />,
+        children: [
+            {
+                path: '/',
+                element: <Home />
+            },
+            {
+                path: 'about',
+                element: <About />
+            }
+        ],
+    }
+], {
+    future: {
+        v7_relativeSplatPath: true,
+        v7_skipActionErrorRevalidation: true,
+        v7_partialHydration: true,
+        v7_normalizeFormMethod: true,
+        v7_fetcherPersist: true,
+
+    },
+});
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <App />
+      <RouterProvider router={router} future={{
+          v7_startTransition: true
+      }} />
   </StrictMode>,
 )
