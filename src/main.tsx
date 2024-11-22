@@ -9,6 +9,7 @@ import About from "./pages/About.tsx";
 import HelpLayout from "./layouts/HelpLayout.tsx";
 import Faq from "./pages/help/Faq.tsx";
 import Contact from "./pages/help/Contact.tsx";
+import NotFound from "./pages/NotFound.tsx";
 
 const router = createBrowserRouter([
     {
@@ -36,6 +37,10 @@ const router = createBrowserRouter([
                         element: <Contact />,
                     },
                 ]
+            },
+            {
+                path: "*",
+                element: <NotFound />
             }
         ],
     }
