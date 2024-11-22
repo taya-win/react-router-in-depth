@@ -6,6 +6,9 @@ import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import RootLayout from "./layouts/RootLayout.tsx";
 import Home from "./pages/Home.tsx";
 import About from "./pages/About.tsx";
+import HelpLayout from "./layouts/HelpLayout.tsx";
+import Faq from "./pages/help/Faq.tsx";
+import Contact from "./pages/help/Contact.tsx";
 
 const router = createBrowserRouter([
     {
@@ -19,6 +22,20 @@ const router = createBrowserRouter([
             {
                 path: 'about',
                 element: <About />
+            },
+            {
+                path: 'help',
+                element: <HelpLayout />,
+                children: [
+                    {
+                        path: 'faq',
+                        element: <Faq />,
+                    },
+                    {
+                        path: 'contact',
+                        element: <Contact />,
+                    },
+                ]
             }
         ],
     }
