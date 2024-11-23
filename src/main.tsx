@@ -10,6 +10,8 @@ import HelpLayout from "./layouts/HelpLayout.tsx";
 import Faq from "./pages/help/Faq.tsx";
 import Contact from "./pages/help/Contact.tsx";
 import NotFound from "./pages/NotFound.tsx";
+import CareersLayout from "./layouts/CareersLayout.tsx";
+import Careers from "./pages/careers/Careers.tsx";
 
 const router = createBrowserRouter([
     {
@@ -17,7 +19,7 @@ const router = createBrowserRouter([
         element: <RootLayout />,
         children: [
             {
-                path: '/',
+                index: true,
                 element: <Home />
             },
             {
@@ -36,6 +38,20 @@ const router = createBrowserRouter([
                         path: 'contact',
                         element: <Contact />,
                     },
+                ]
+            },
+            {
+                path: 'careers',
+                element: <CareersLayout />,
+                children: [
+                    {
+                        index: true,
+                        element: <Careers />,
+                        loader: async() => {
+                            const res = await fetch('http://localhost:4000/careers')
+                            return res.json()
+                        },
+                    }
                 ]
             },
             {
