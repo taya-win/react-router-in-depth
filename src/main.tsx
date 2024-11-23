@@ -1,4 +1,4 @@
-import { StrictMode } from 'react'
+import {StrictMode} from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 // import App from './App.tsx'
@@ -13,6 +13,7 @@ import NotFound from "./pages/NotFound.tsx";
 import CareersLayout from "./layouts/CareersLayout.tsx";
 import Careers from "./pages/careers/Careers.tsx";
 import CareerDetails from "./pages/careers/CareerDetails.tsx";
+import CareersError from "./pages/careers/CareersError.tsx";
 
 const router = createBrowserRouter([
     {
@@ -44,22 +45,27 @@ const router = createBrowserRouter([
             {
                 path: 'careers',
                 element: <CareersLayout />,
+                errorElement: <CareersError />,
+                HydrateFallback: () => <div>Loading...</div>,
                 children: [
                     {
                         index: true,
                         element: <Careers />,
                         loader: async() => {
                             const res = await fetch('http://localhost:4000/careers')
+                            if(!res.ok) throw Error('Could not fetch the careers.');
                             return res.json()
                         },
+
                     },
                     {
                         path: ':id',
                         element: <CareerDetails />,
                         loader: async ({params}) => {
                             const { id } = params;
-                            const res = await fetch('http://localhost:4000/careers/' + id)
-                            return res.json()
+                            const res = await fetch('http://localhost:4000/careers/' + id);
+                            if(!res.ok) throw Error('Could not find that career.');
+                            return res.json();
                         },
                     }
                 ]
@@ -77,14 +83,13 @@ const router = createBrowserRouter([
         v7_partialHydration: true,
         v7_normalizeFormMethod: true,
         v7_fetcherPersist: true,
-
     },
 });
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
       <RouterProvider router={router} future={{
-          v7_startTransition: true
-      }} />
+          v7_startTransition: true,
+      }}  />
   </StrictMode>,
 )
