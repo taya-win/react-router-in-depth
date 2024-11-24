@@ -2,7 +2,7 @@ import {StrictMode} from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 // import App from './App.tsx'
-import {createBrowserRouter, RouterProvider} from "react-router-dom";
+import {createBrowserRouter, redirect, RouterProvider} from "react-router-dom";
 import RootLayout from "./layouts/RootLayout.tsx";
 import Home from "./pages/Home.tsx";
 import About from "./pages/About.tsx";
@@ -39,6 +39,25 @@ const router = createBrowserRouter([
                     {
                         path: 'contact',
                         element: <Contact />,
+                        action: async ({request}) => {
+                            const data = await request.formData();
+
+                            const submission = {
+                                email: data.get('email'),
+                                message: data.get('message') as string,
+                            }
+
+                            console.log(submission)
+
+                            // send your post request
+
+                            if (submission.message && submission.message.length < 10) {
+                                return {error: 'Message must be over 10 chars long.'}
+                            }
+
+                            // redirect the user
+                            return redirect('/')
+                        },
                     },
                 ]
             },
